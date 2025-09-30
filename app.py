@@ -74,7 +74,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- IBM RXN APP LOGIC ---
-API_KEY = st.secrets["ibm_rxn_api_key"]
+API_KEY = "apk-4c35f5a6f7d59ca8ec45d45b9bbd45a7b4656075632d948af776aa73ce020837"
+
 rxn_wrapper = RXN4ChemistryWrapper(api_key=API_KEY)
 
 st.markdown('<div class="title">IBM RXN Chemistry Protocol Extractor</div>', unsafe_allow_html=True)
