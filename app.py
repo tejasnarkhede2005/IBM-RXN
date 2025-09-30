@@ -8,41 +8,6 @@ st.set_page_config(page_title="IBM RXN Protocol Extractor", page_icon="🧪", la
 # --- CUSTOM CSS STYLING ---
 st.markdown("""
     <style>
-    /* Navbar container */
-    .navbar {
-        display: flex;
-        justify-content: left;
-        background-color: #1E1E2F;
-        padding: 12px 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    /* Navbar links as buttons */
-    .navbar a {
-        display: inline-block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 10px 18px;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: 500;
-        border-radius: 12px;
-        transition: 0.3s;
-        border: 1.5px solid transparent;
-    }
-    .navbar a:hover {
-        background-color: #5757D1;
-        color: white;
-        border: 1.5px solid #3A3AA9;
-    }
-    /* Active page */
-    .navbar a.active {
-        background-color: #5757D1;
-        color: white;
-        border: 1.5px solid #3A3AA9;
-    }
     /* Title styling */
     .title {
         font-size: 32px;
@@ -72,28 +37,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- QUERY PARAMS & SESSION STATE ---
-query_params = st.experimental_get_query_params()
-if "page" not in st.session_state:
-    st.session_state.page = query_params.get("page", ["Home"])[0]
-
-# --- TOP NAVBAR WITH ACTIVE PAGE ---
-nav_items = {
-    "🏠 Home": "Home",
-    "⚗️ Extractor": "Extractor",
-    "📘 Documentation": "Documentation",
-    "ℹ️ About": "About",
-    "📞 Contact": "Contact",
-    "⚙️ Settings": "Settings"
-}
-
-nav_html = '<div class="navbar">'
-for label, page in nav_items.items():
-    active_class = "active" if st.session_state.page == page else ""
-    nav_html += f'<a class="{active_class}" href="?page={page}">{label}</a>'
-nav_html += '</div>'
-st.markdown(nav_html, unsafe_allow_html=True)
-
 # --- SIDEBAR MENU ---
 with st.sidebar:
     choice = option_menu(
@@ -101,11 +44,8 @@ with st.sidebar:
         ["Home", "Extractor", "Documentation", "About", "Contact", "Settings"],
         icons=["house", "beaker", "book", "info-circle", "telephone", "gear"],
         menu_icon="list",
-        default_index=list(nav_items.values()).index(st.session_state.page),
+        default_index=0,
     )
-
-# Sync sidebar choice with session state
-st.session_state.page = choice
 
 # --- IBM RXN APP LOGIC ---
 API_KEY = "apk-4c35f5a6f7d59ca8ec45d45b9bbd45a7b4656075632d948af776aa73ce020837"
@@ -114,8 +54,26 @@ rxn_wrapper = RXN4ChemistryWrapper(api_key=API_KEY)
 # --- PAGE FUNCTIONS ---
 def home_page():
     st.markdown('<div class="title">🏠 Welcome to IBM RXN Chemistry App</div>', unsafe_allow_html=True)
-    st.write("This app helps you extract **chemical reaction protocol steps** using the IBM RXN API.")
-    st.info("➡️ Use the **Extractor** page to start!")
+    st.write("""
+    **IBM RXN Chemistry Protocol Extractor** helps chemists, researchers, and students 
+    automatically extract **step-by-step synthesis protocols** from plain text reaction descriptions.
+    """)
+    
+    st.write("### 🔹 Features")
+    st.write("- Extract protocol steps from reaction procedures easily.")
+    st.write("- Clean and modern **Streamlit interface**.")
+    st.write("- Sidebar navigation for quick access to pages.")
+    st.write("- Dark/light theme toggle in Settings page.")
+    
+    st.write("### 🔹 How to Use")
+    st.write("1. Go to the **Extractor** page.")
+    st.write("2. Paste your chemical reaction procedure text.")
+    st.write("3. Click **Extract Protocol Steps** to view results.")
+    
+    st.write("### 🔹 Benefits")
+    st.write("- Save time manually parsing reaction protocols.")
+    st.write("- Easily share extracted protocols with your team.")
+    st.write("- Ideal for research and educational purposes.")
 
 def extractor_page():
     st.markdown('<div class="title">⚗️ Protocol Extractor</div>', unsafe_allow_html=True)
@@ -142,7 +100,7 @@ def documentation_page():
     st.markdown('<div class="title">📘 Documentation</div>', unsafe_allow_html=True)
     st.write("""
     ### How it Works
-    1. Paste your reaction text in the **Extractor**.
+    1. Paste your reaction text in the **Extractor** page.
     2. IBM RXN API parses and extracts **step-by-step instructions**.
     3. Results appear as a numbered list of actions.
 
@@ -187,4 +145,4 @@ page_routes = {
     "Settings": settings_page
 }
 
-page_routes[st.session_state.page]()
+page_routes[choice]()
