@@ -6,27 +6,37 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title="IBM RXN Protocol Extractor", page_icon="🧪", layout="wide")
 
 # --- CUSTOM CSS STYLING ---
-def apply_theme(theme="Light"):
-    if theme == "Light":
-        st.markdown("""
-            <style>
-            body { background-color: #F5F5F5; color: #000000; }
-            .stTextArea textarea { background-color: #FFFFFF; color: #000000; }
-            .stButton>button { background-color: #5757D1; color: white; }
-            .title { color: #2C3E50; }
-            </style>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-            <style>
-            body { background-color: #1E1E2F; color: #FFFFFF; }
-            .stTextArea textarea { background-color: #2C2C3A; color: #FFFFFF; }
-            .stButton>button { background-color: #3A3AA9; color: white; }
-            .title { color: #FFFFFF; }
-            </style>
-        """, unsafe_allow_html=True)
-
-apply_theme("Light")  # Default theme
+st.markdown("""
+    <style>
+    /* Title styling */
+    .title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2C3E50;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    /* Input areas */
+    .stTextArea textarea {
+        border-radius: 12px !important;
+        border: 1.5px solid #5757D1 !important;
+        font-size: 15px !important;
+    }
+    .stButton>button {
+        background-color: #5757D1 !important;
+        color: white !important;
+        border-radius: 12px !important;
+        padding: 10px 20px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #3A3AA9 !important;
+    }
+    a {text-decoration: none;}
+    </style>
+""", unsafe_allow_html=True)
 
 # --- SIDEBAR MENU ---
 with st.sidebar:
@@ -54,7 +64,6 @@ def home_page():
     st.write("- Extract protocol steps from reaction procedures easily.")
     st.write("- Clean and modern **Streamlit interface**.")
     st.write("- Sidebar navigation for quick access to pages.")
-    st.write("- Dark/light theme toggle in Settings page.")
     
     st.write("### 🔹 How to Use")
     st.write("1. Go to the **Extractor** page.")
@@ -116,18 +125,61 @@ def contact_page():
 
 def settings_page():
     st.markdown('<div class="title">⚙️ Settings</div>', unsafe_allow_html=True)
-    st.write("Customize app appearance below:")
+    st.write("Learn more about the app and its usage below:")
 
-    theme_choice = st.radio("Choose Theme:", ["Light", "Dark"], index=0)
+    # Use columns to display cards
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("""
+        <div style="background-color:#5757D1; padding:20px; border-radius:12px; color:white;">
+            <h3>📝 App Information</h3>
+            <ul>
+                <li><b>App Name:</b> IBM RXN Chemistry Protocol Extractor</li>
+                <li><b>Version:</b> 1.0.0</li>
+                <li><b>Developer:</b> Your Name / Organization</li>
+                <li><b>Purpose:</b> Extract step-by-step chemical reaction protocols</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     
-    if theme_choice == "Light":
-        apply_theme("Light")
-        st.success("🌞 Light theme applied!")
-    else:
-        apply_theme("Dark")
-        st.success("🌙 Dark theme applied!")
+    with col2:
+        st.markdown("""
+        <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
+            <h3>💡 Usage Guide</h3>
+            <ul>
+                <li>Go to the <b>Extractor</b> page</li>
+                <li>Paste chemical reaction procedure text</li>
+                <li>Click <b>Extract Protocol Steps</b></li>
+                <li>View the extracted step-by-step instructions</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("""
+        <div style="background-color:#5757D1; padding:20px; border-radius:12px; color:white;">
+            <h3>⚠️ Notes</h3>
+            <ul>
+                <li>Ensure reaction text is clear and complete</li>
+                <li>Results depend on IBM RXN API parsing accuracy</li>
+                <li>Check formatting for best results</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     
-    st.info("⚡ Theme changes are applied instantly using CSS.")
+    with col4:
+        st.markdown("""
+        <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
+            <h3>📞 Support</h3>
+            <ul>
+                <li>Email: support@rxnchemistry.com</li>
+                <li>Website: <a href='https://rxn.res.ibm.com' style='color:white;' target='_blank'>IBM RXN</a></li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
 # --- PAGE ROUTING ---
 page_routes = {
