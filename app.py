@@ -231,4 +231,9 @@ page_routes = {
     "Home": home_page,
     "⚗️ Extractor": extractor_page,
     "Documentation": documentation_page,
-    "About": about_page
+    "About": about_page,
+    "Contact": contact_page,
+    "Settings": settings_page
+}
+
+page_routes[choice]()
