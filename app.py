@@ -1,5 +1,6 @@
 import streamlit as st
 from rxn4chemistry import RXN4ChemistryWrapper
+from streamlit_option_menu import option_menu
 
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="IBM RXN Protocol Extractor", page_icon="🧪", layout="wide")
@@ -42,7 +43,7 @@ st.markdown("""
         text-align: center;
         margin-bottom: 15px;
     }
-    /* Main container */
+    /* Input areas */
     .stTextArea textarea {
         border-radius: 12px !important;
         border: 1.5px solid #5757D1 !important;
@@ -63,41 +64,39 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- NAVBAR (linked with session state) ---
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
+# --- TOP NAVBAR ---
+st.markdown("""
+<div class="navbar">
+  <a href="#">🏠 Home</a>
+  <a href="#">⚗️ Extractor</a>
+  <a href="#">📘 Documentation</a>
+  <a href="#">ℹ️ About</a>
+  <a href="#">📞 Contact</a>
+  <a href="#" class="right">⚙️ Settings</a>
+</div>
+""", unsafe_allow_html=True)
 
-nav_items = {
-    "🏠 Home": "Home",
-    "⚗️ Extractor": "Extractor",
-    "📘 Documentation": "Docs",
-    "ℹ️ About": "About",
-    "📞 Contact": "Contact",
-    "⚙️ Settings": "Settings"
-}
+# --- SIDEBAR MENU ---
+with st.sidebar:
+    choice = option_menu(
+        "Navigation Menu",
+        ["Home", "Extractor", "Documentation", "About", "Contact", "Settings"],
+        icons=["house", "beaker", "book", "info-circle", "telephone", "gear"],
+        menu_icon="list",
+        default_index=0,
+    )
 
-# Render Navbar
-nav_html = '<div class="navbar">'
-for label, page in nav_items.items():
-    nav_html += f'<a href="?page={page}">{label}</a>'
-nav_html += '</div>'
-st.markdown(nav_html, unsafe_allow_html=True)
-
-# Detect page from query params
-query_params = st.experimental_get_query_params()
-if "page" in query_params:
-    st.session_state.page = query_params["page"][0]
-
-# --- PAGES ---
+# --- IBM RXN APP LOGIC ---
 API_KEY = "apk-4c35f5a6f7d59ca8ec45d45b9bbd45a7b4656075632d948af776aa73ce020837"
 rxn_wrapper = RXN4ChemistryWrapper(api_key=API_KEY)
 
-if st.session_state.page == "Home":
+# --- PAGE CONTENT ---
+if choice == "Home":
     st.markdown('<div class="title">🏠 Welcome to IBM RXN Chemistry App</div>', unsafe_allow_html=True)
     st.write("This app helps you extract **chemical reaction protocol steps** using the IBM RXN API.")
-    st.info("Navigate to the **Extractor** page to start!")
+    st.info("➡️ Use the **Extractor** page to start!")
 
-elif st.session_state.page == "Extractor":
+elif choice == "Extractor":
     st.markdown('<div class="title">⚗️ Protocol Extractor</div>', unsafe_allow_html=True)
     st.write("Paste your **chemical reaction procedure text** below to extract protocol steps:")
     input_text = st.text_area("Reaction Procedure Text", height=300)
@@ -118,35 +117,34 @@ elif st.session_state.page == "Extractor":
                 except Exception as e:
                     st.error(f"❌ Error calling IBM RXN API: {e}")
 
-elif st.session_state.page == "Docs":
+elif choice == "Documentation":
     st.markdown('<div class="title">📘 Documentation</div>', unsafe_allow_html=True)
     st.write("""
-    **How it works:**
-    - Paste your chemical reaction text in the Extractor.
-    - The IBM RXN API parses and extracts **step-by-step synthesis instructions**.
-    - Results are shown as a numbered list of protocol actions.
-    
-    **Tech stack:**
-    - Streamlit (Frontend)
-    - IBM RXN API (Backend AI Engine)
+    ### How it Works
+    1. Paste your reaction text in the **Extractor**.
+    2. IBM RXN API parses and extracts **step-by-step instructions**.
+    3. Results appear as a numbered list of actions.
+
+    ### Tech Stack
+    - **Frontend:** Streamlit
+    - **Backend:** IBM RXN API
     """)
 
-elif st.session_state.page == "About":
+elif choice == "About":
     st.markdown('<div class="title">ℹ️ About This App</div>', unsafe_allow_html=True)
     st.write("""
-    This project demonstrates how to use the **IBM RXN for Chemistry API**
-    inside a modern **Streamlit app** with a stylish UI.
-
-    Created for chemists, researchers, and students 🧪✨
+    This project demonstrates the integration of **IBM RXN for Chemistry API**
+    with a modern **Streamlit interface** for protocol extraction.  
+    Made for **researchers, chemists, and students** 🧪✨
     """)
 
-elif st.session_state.page == "Contact":
+elif choice == "Contact":
     st.markdown('<div class="title">📞 Contact</div>', unsafe_allow_html=True)
     st.write("For any queries, reach out via:")
     st.write("- 📧 Email: support@rxnchemistry.com")
     st.write("- 🌐 Website: [IBM RXN](https://rxn.res.ibm.com)")
 
-elif st.session_state.page == "Settings":
+elif choice == "Settings":
     st.markdown('<div class="title">⚙️ Settings</div>', unsafe_allow_html=True)
-    st.write("Here you can configure app preferences (future feature).")
+    st.write("Future updates will allow API key customization and theme settings.")
     st.info("⚡ Currently, settings are not customizable.")
