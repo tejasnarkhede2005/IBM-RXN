@@ -8,32 +8,40 @@ st.set_page_config(page_title="IBM RXN Protocol Extractor", page_icon="🧪", la
 # --- CUSTOM CSS STYLING ---
 st.markdown("""
     <style>
-    /* Navbar styling */
+    /* Navbar container */
     .navbar {
+        display: flex;
+        justify-content: left;
         background-color: #1E1E2F;
-        overflow: hidden;
         padding: 12px 20px;
         border-radius: 12px;
         margin-bottom: 25px;
+        gap: 10px;
+        flex-wrap: wrap;
     }
+    /* Navbar links as buttons */
     .navbar a {
-        float: left;
-        display: block;
+        display: inline-block;
         color: #f2f2f2;
         text-align: center;
         padding: 10px 18px;
         text-decoration: none;
         font-size: 16px;
         font-weight: 500;
+        border-radius: 12px;
         transition: 0.3s;
-        border-radius: 8px;
+        border: 1.5px solid transparent;
     }
     .navbar a:hover {
         background-color: #5757D1;
         color: white;
+        border: 1.5px solid #3A3AA9;
     }
-    .navbar .right {
-        float: right;
+    /* Active page */
+    .navbar a.active {
+        background-color: #5757D1;
+        color: white;
+        border: 1.5px solid #3A3AA9;
     }
     /* Title styling */
     .title {
@@ -64,17 +72,27 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- TOP NAVBAR ---
-st.markdown("""
-<div class="navbar">
-  <a href="#">🏠 Home</a>
-  <a href="#">⚗️ Extractor</a>
-  <a href="#">📘 Documentation</a>
-  <a href="#">ℹ️ About</a>
-  <a href="#">📞 Contact</a>
-  <a href="#" class="right">⚙️ Settings</a>
-</div>
-""", unsafe_allow_html=True)
+# --- QUERY PARAMS & SESSION STATE ---
+query_params = st.experimental_get_query_params()
+if "page" not in st.session_state:
+    st.session_state.page = query_params.get("page", ["Home"])[0]
+
+# --- TOP NAVBAR WITH ACTIVE PAGE ---
+nav_items = {
+    "🏠 Home": "Home",
+    "⚗️ Extractor": "Extractor",
+    "📘 Documentation": "Documentation",
+    "ℹ️ About": "About",
+    "📞 Contact": "Contact",
+    "⚙️ Settings": "Settings"
+}
+
+nav_html = '<div class="navbar">'
+for label, page in nav_items.items():
+    active_class = "active" if st.session_state.page == page else ""
+    nav_html += f'<a class="{active_class}" href="?page={page}">{label}</a>'
+nav_html += '</div>'
+st.markdown(nav_html, unsafe_allow_html=True)
 
 # --- SIDEBAR MENU ---
 with st.sidebar:
@@ -83,20 +101,23 @@ with st.sidebar:
         ["Home", "Extractor", "Documentation", "About", "Contact", "Settings"],
         icons=["house", "beaker", "book", "info-circle", "telephone", "gear"],
         menu_icon="list",
-        default_index=0,
+        default_index=list(nav_items.values()).index(st.session_state.page),
     )
+
+# Sync sidebar choice with session state
+st.session_state.page = choice
 
 # --- IBM RXN APP LOGIC ---
 API_KEY = "apk-4c35f5a6f7d59ca8ec45d45b9bbd45a7b4656075632d948af776aa73ce020837"
 rxn_wrapper = RXN4ChemistryWrapper(api_key=API_KEY)
 
-# --- PAGE CONTENT ---
-if choice == "Home":
+# --- PAGE FUNCTIONS ---
+def home_page():
     st.markdown('<div class="title">🏠 Welcome to IBM RXN Chemistry App</div>', unsafe_allow_html=True)
     st.write("This app helps you extract **chemical reaction protocol steps** using the IBM RXN API.")
     st.info("➡️ Use the **Extractor** page to start!")
 
-elif choice == "Extractor":
+def extractor_page():
     st.markdown('<div class="title">⚗️ Protocol Extractor</div>', unsafe_allow_html=True)
     st.write("Paste your **chemical reaction procedure text** below to extract protocol steps:")
     input_text = st.text_area("Reaction Procedure Text", height=300)
@@ -117,7 +138,7 @@ elif choice == "Extractor":
                 except Exception as e:
                     st.error(f"❌ Error calling IBM RXN API: {e}")
 
-elif choice == "Documentation":
+def documentation_page():
     st.markdown('<div class="title">📘 Documentation</div>', unsafe_allow_html=True)
     st.write("""
     ### How it Works
@@ -130,7 +151,7 @@ elif choice == "Documentation":
     - **Backend:** IBM RXN API
     """)
 
-elif choice == "About":
+def about_page():
     st.markdown('<div class="title">ℹ️ About This App</div>', unsafe_allow_html=True)
     st.write("""
     This project demonstrates the integration of **IBM RXN for Chemistry API**
@@ -138,13 +159,32 @@ elif choice == "About":
     Made for **researchers, chemists, and students** 🧪✨
     """)
 
-elif choice == "Contact":
+def contact_page():
     st.markdown('<div class="title">📞 Contact</div>', unsafe_allow_html=True)
     st.write("For any queries, reach out via:")
     st.write("- 📧 Email: support@rxnchemistry.com")
     st.write("- 🌐 Website: [IBM RXN](https://rxn.res.ibm.com)")
 
-elif choice == "Settings":
+def settings_page():
     st.markdown('<div class="title">⚙️ Settings</div>', unsafe_allow_html=True)
-    st.write("Future updates will allow API key customization and theme settings.")
-    st.info("⚡ Currently, settings are not customizable.")
+    st.write("Customize app preferences below:")
+    theme_choice = st.radio("Choose Theme:", ["Light", "Dark"], index=0 if st.get_option("theme.base") == "light" else 1)
+    if theme_choice == "Light":
+        st.write("🌞 Light theme activated (refresh required)")
+        st.set_option("theme.base", "light")
+    else:
+        st.write("🌙 Dark theme activated (refresh required)")
+        st.set_option("theme.base", "dark")
+    st.info("⚡ Some theme changes may require page refresh.")
+
+# --- PAGE ROUTING ---
+page_routes = {
+    "Home": home_page,
+    "Extractor": extractor_page,
+    "Documentation": documentation_page,
+    "About": about_page,
+    "Contact": contact_page,
+    "Settings": settings_page
+}
+
+page_routes[st.session_state.page]()
