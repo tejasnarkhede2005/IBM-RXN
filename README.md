@@ -3,9 +3,9 @@
 #Live LINK : https://ibm-rxn-physics-chemistry-protocol-extractor.streamlit.app/
 
 
-##flowchart TD
+flowchart TD
 ```mermaid
-
+flowchart TD
     A[Start] --> B[Home Page]
     B --> C[Extractor Page]
     C --> D{Paste Reaction Text?}
