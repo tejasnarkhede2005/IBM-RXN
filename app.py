@@ -52,7 +52,6 @@ st.markdown("""
             <a href="https://rxn.res.ibm.com" target="_blank">IBM RXN Home</a>
             <a href="https://github.com/rxn4chemistry" target="_blank">GitHub</a>
             <a href="https://streamlit.io" target="_blank">About</a>
-            <a href="mailto:support@ibmrxn.com">Contact</a>
         </div>
     </div>
 """, unsafe_allow_html=True)
