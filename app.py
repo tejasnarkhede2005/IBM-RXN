@@ -6,36 +6,27 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title="IBM RXN Protocol Extractor", page_icon="🧪", layout="wide")
 
 # --- CUSTOM CSS STYLING ---
-st.markdown("""
-    <style>
-    /* Title styling */
-    .title {
-        font-size: 32px;
-        font-weight: 700;
-        color: #2C3E50;
-        text-align: center;
-        margin-bottom: 15px;
-    }
-    /* Input areas */
-    .stTextArea textarea {
-        border-radius: 12px !important;
-        border: 1.5px solid #5757D1 !important;
-        font-size: 15px !important;
-    }
-    .stButton>button {
-        background-color: #5757D1 !important;
-        color: white !important;
-        border-radius: 12px !important;
-        padding: 10px 20px !important;
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background-color: #3A3AA9 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+def apply_theme(theme="Light"):
+    if theme == "Light":
+        st.markdown("""
+            <style>
+            body { background-color: #F5F5F5; color: #000000; }
+            .stTextArea textarea { background-color: #FFFFFF; color: #000000; }
+            .stButton>button { background-color: #5757D1; color: white; }
+            .title { color: #2C3E50; }
+            </style>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+            <style>
+            body { background-color: #1E1E2F; color: #FFFFFF; }
+            .stTextArea textarea { background-color: #2C2C3A; color: #FFFFFF; }
+            .stButton>button { background-color: #3A3AA9; color: white; }
+            .title { color: #FFFFFF; }
+            </style>
+        """, unsafe_allow_html=True)
+
+apply_theme("Light")  # Default theme
 
 # --- SIDEBAR MENU ---
 with st.sidebar:
@@ -125,15 +116,18 @@ def contact_page():
 
 def settings_page():
     st.markdown('<div class="title">⚙️ Settings</div>', unsafe_allow_html=True)
-    st.write("Customize app preferences below:")
-    theme_choice = st.radio("Choose Theme:", ["Light", "Dark"], index=0 if st.get_option("theme.base") == "light" else 1)
+    st.write("Customize app appearance below:")
+
+    theme_choice = st.radio("Choose Theme:", ["Light", "Dark"], index=0)
+    
     if theme_choice == "Light":
-        st.write("🌞 Light theme activated (refresh required)")
-        st.set_option("theme.base", "light")
+        apply_theme("Light")
+        st.success("🌞 Light theme applied!")
     else:
-        st.write("🌙 Dark theme activated (refresh required)")
-        st.set_option("theme.base", "dark")
-    st.info("⚡ Some theme changes may require page refresh.")
+        apply_theme("Dark")
+        st.success("🌙 Dark theme applied!")
+    
+    st.info("⚡ Theme changes are applied instantly using CSS.")
 
 # --- PAGE ROUTING ---
 page_routes = {
