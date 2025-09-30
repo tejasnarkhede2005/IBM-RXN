@@ -111,11 +111,60 @@ def documentation_page():
 
 def about_page():
     st.markdown('<div class="title">ℹ️ About This App</div>', unsafe_allow_html=True)
-    st.write("""
-    This project demonstrates the integration of **IBM RXN for Chemistry API**
-    with a modern **Streamlit interface** for protocol extraction.  
-    Made for **researchers, chemists, and students** 🧪✨
-    """)
+    st.write("Learn more about the app, its purpose, and target audience:")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("""
+        <div style="background-color:#5757D1; padding:20px; border-radius:12px; color:white;">
+            <h3>🧪 Purpose</h3>
+            <ul>
+                <li>Automatically extract step-by-step chemical reaction protocols</li>
+                <li>Save researchers time manually parsing reaction procedures</li>
+                <li>Provide structured, easy-to-read instructions for lab work or study</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
+            <h3>👨‍🔬 Target Audience</h3>
+            <ul>
+                <li>Chemists and laboratory researchers</li>
+                <li>Students studying organic and inorganic chemistry</li>
+                <li>Educational institutions and research teams</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.markdown("""
+        <div style="background-color:#5757D1; padding:20px; border-radius:12px; color:white;">
+            <h3>⚡ Features</h3>
+            <ul>
+                <li>Step-by-step extraction of reaction procedures</li>
+                <li>Clean and modern Streamlit interface</li>
+                <li>Sidebar navigation for easy page access</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown("""
+        <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
+            <h3>📖 Additional Info</h3>
+            <ul>
+                <li>Powered by IBM RXN Chemistry API</li>
+                <li>Useful for research, teaching, and lab workflow optimization</li>
+                <li>Supports sharing of extracted protocols for collaboration</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
 def contact_page():
     st.markdown('<div class="title">📞 Contact</div>', unsafe_allow_html=True)
@@ -127,7 +176,7 @@ def settings_page():
     st.markdown('<div class="title">⚙️ Settings</div>', unsafe_allow_html=True)
     st.write("Learn more about the app and its usage below:")
 
-    # Use columns to display cards
+    # Cards layout
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
@@ -136,7 +185,7 @@ def settings_page():
             <ul>
                 <li><b>App Name:</b> IBM RXN Chemistry Protocol Extractor</li>
                 <li><b>Version:</b> 1.0.0</li>
-                <li><b>Developer:</b> Tejas </li>
+                <li><b>Developer:</b> Tejas</li>
                 <li><b>Purpose:</b> Extract step-by-step chemical reaction protocols</li>
             </ul>
         </div>
