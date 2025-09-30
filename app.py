@@ -120,7 +120,7 @@ def about_page():
 def contact_page():
     st.markdown('<div class="title">📞 Contact</div>', unsafe_allow_html=True)
     st.write("For any queries, reach out via:")
-    st.write("- 📧 Email: support@rxnchemistry.com")
+    st.write("- 📧 Email: tejasnarkhede03@gmail.com")
     st.write("- 🌐 Website: [IBM RXN](https://rxn.res.ibm.com)")
 
 def settings_page():
@@ -136,7 +136,7 @@ def settings_page():
             <ul>
                 <li><b>App Name:</b> IBM RXN Chemistry Protocol Extractor</li>
                 <li><b>Version:</b> 1.0.0</li>
-                <li><b>Developer:</b> Your Name / Organization</li>
+                <li><b>Developer:</b> Tejas </li>
                 <li><b>Purpose:</b> Extract step-by-step chemical reaction protocols</li>
             </ul>
         </div>
@@ -175,7 +175,7 @@ def settings_page():
         <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
             <h3>📞 Support</h3>
             <ul>
-                <li>Email: support@rxnchemistry.com</li>
+                <li>Email: tejasnarkhede03@gmail.com</li>
                 <li>Website: <a href='https://rxn.res.ibm.com' style='color:white;' target='_blank'>IBM RXN</a></li>
             </ul>
         </div>
