@@ -12,7 +12,7 @@ st.markdown("""
     .title {
         font-size: 32px;
         font-weight: 700;
-        color: #2C3E50;
+        color: white;               /* Bold white titles */
         text-align: center;
         margin-bottom: 15px;
     }
@@ -42,7 +42,7 @@ st.markdown("""
 with st.sidebar:
     choice = option_menu(
         "Navigation Menu",
-        ["Home", "Extractor", "Documentation", "About", "Contact", "Settings"],
+        ["Home", "⚗️ Extractor", "Documentation", "About", "Contact", "Settings"],  # Added ⚗️
         icons=["house", "beaker", "book", "info-circle", "telephone", "gear"],
         menu_icon="list",
         default_index=0,
@@ -114,7 +114,6 @@ def about_page():
     st.write("Learn more about the app, its purpose, and target audience:")
 
     col1, col2 = st.columns(2)
-
     with col1:
         st.markdown("""
         <div style="background-color:#5757D1; padding:20px; border-radius:12px; color:white;">
@@ -140,7 +139,6 @@ def about_page():
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-
     col3, col4 = st.columns(2)
     with col3:
         st.markdown("""
@@ -176,7 +174,6 @@ def settings_page():
     st.markdown('<div class="title">⚙️ Settings</div>', unsafe_allow_html=True)
     st.write("Learn more about the app and its usage below:")
 
-    # Cards layout
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
@@ -190,7 +187,7 @@ def settings_page():
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
+
     with col2:
         st.markdown("""
         <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
@@ -205,7 +202,6 @@ def settings_page():
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-
     col3, col4 = st.columns(2)
     with col3:
         st.markdown("""
@@ -218,7 +214,7 @@ def settings_page():
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
+
     with col4:
         st.markdown("""
         <div style="background-color:#3A3AA9; padding:20px; border-radius:12px; color:white;">
@@ -233,11 +229,6 @@ def settings_page():
 # --- PAGE ROUTING ---
 page_routes = {
     "Home": home_page,
-    "Extractor": extractor_page,
+    "⚗️ Extractor": extractor_page,
     "Documentation": documentation_page,
-    "About": about_page,
-    "Contact": contact_page,
-    "Settings": settings_page
-}
-
-page_routes[choice]()
+    "About": about_page
